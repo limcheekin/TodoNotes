@@ -13,21 +13,21 @@ import 'db_info.dart';
 class DBHelper {
   static const String DB_VERSION = "db_version";
 
-  DBInfo dbInfo;
+  DBInfo? dbInfo;
 
-  Database _db;
+  Database? _db;
 
   DBHelper._privateConstructor();
 
   static final DBHelper dbHelper = DBHelper._privateConstructor();
 
-  Database getDatabase() {
+  Database? getDatabase() {
     return _db;
   }
 
   Future<bool> init(DBInfo dbInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int oldVersion = await prefs.get(DB_VERSION) ?? 0;
+    int oldVersion = prefs.getInt(DB_VERSION) ?? 0;
 
     if (AppDatabaseInfo.DATABASE_VERSION > oldVersion) {
       await prefs.setInt(DB_VERSION, AppDatabaseInfo.DATABASE_VERSION);
@@ -56,5 +56,5 @@ class DBHelper {
     });
   }
 
-  Future close() async => _db.close();
+  Future close() async => _db!.close();
 }

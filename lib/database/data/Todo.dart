@@ -8,12 +8,12 @@ class Todo {
   static const String columnColor = 'color';
   static const String columnPassword = 'password';
 
-  int id;
-  String title;
-  String description;
-  int createdAt;
-  int color;
-  String password;
+  int? id;
+  String? title;
+  String? description;
+  int? createdAt;
+  int? color;
+  String? password;
 
   Todo(
       {this.id,

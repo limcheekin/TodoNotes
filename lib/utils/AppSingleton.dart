@@ -11,6 +11,6 @@ class AppSingleton {
       content: Text(message),
       backgroundColor: color,
     );
-    key.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(key.currentContext!).showSnackBar(snackBar);
   }
 }

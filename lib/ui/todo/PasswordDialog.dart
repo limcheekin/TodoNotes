@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:todo/ui/todo/AddTodoView.dart';
 
 class PasswordDialog extends StatefulWidget {
-  final AddTodoView view;
+  final AddTodoView? view;
 
-  const PasswordDialog({Key key, this.view}) : super(key: key);
+  const PasswordDialog({Key? key, this.view}) : super(key: key);
 
   @override
   _PasswordDialogState createState() => _PasswordDialogState();
@@ -18,7 +18,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
   var _focusNodePassword = FocusNode();
   var _focusNodeConfirmPassword = FocusNode();
 
-  bool passwordVisible;
+  late bool passwordVisible;
 
   @override
   void initState() {
@@ -120,7 +120,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: new Text('CANCEL',
               style: TextStyle(
                 color: Colors.black,
@@ -131,7 +131,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        TextButton(
           child: new Text('PROTECT',
               style: TextStyle(
                 color: Colors.black,
@@ -168,7 +168,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
             }
 
             Navigator.of(context).pop();
-            widget.view.onPasswordValidate(_passwordController.text);
+            widget.view!.onPasswordValidate(_passwordController.text);
           },
         )
       ],

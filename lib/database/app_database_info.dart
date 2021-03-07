@@ -32,17 +32,17 @@ class AppDatabaseInfo implements DBInfo, IMigrationTask {
   }
 
   @override
-  Future<bool> onUpgrade(Database theDb, int oldVersion, int newVersion) async {
+  Future<bool> onUpgrade(Database? theDb, int oldVersion, int newVersion) async {
     List<String> dbDropList = _generateDropQueryList();
     List<String> dbSchemaQueryList = _generateCreationQueryList();
 
     for (var i = 0; i < dbDropList.length; i++) {
-      theDb.execute(dbDropList[i]);
+      theDb!.execute(dbDropList[i]);
     }
     print('table deleted');
 
     for (var i = 0; i < dbSchemaQueryList.length; i++) {
-      theDb.execute(dbSchemaQueryList[i]);
+      theDb!.execute(dbSchemaQueryList[i]);
     }
     print('new tables created');
 

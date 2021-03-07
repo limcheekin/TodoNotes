@@ -1,3 +1,3 @@
 abstract class DashboardView {
-  void onPasswordValidated(int todoId);
+  void onPasswordValidated(int? todoId);
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:todo/database/data/Todo.dart';
 import 'package:todo/ui/dashboard/DashboardView.dart';
-import 'package:todo/ui/todo/AddTodoView.dart';
 
 class PasswordDialog extends StatefulWidget {
-  final DashboardView view;
-  final Todo todo;
+  final DashboardView? view;
+  final Todo? todo;
 
-  const PasswordDialog({Key key, this.view, this.todo}) : super(key: key);
+  const PasswordDialog({Key? key, this.view, this.todo}) : super(key: key);
 
   @override
   _PasswordDialogState createState() => _PasswordDialogState();
@@ -17,7 +16,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
   final _passwordController = TextEditingController();
   String errorMessage = "";
 
-  bool passwordVisible;
+  late bool passwordVisible;
 
   @override
   void initState() {
@@ -80,7 +79,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: new Text('CANCEL',
               style: TextStyle(
                 color: Colors.black,
@@ -91,7 +90,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        TextButton(
           child: new Text('OPEN',
               style: TextStyle(
                 color: Colors.black,
@@ -105,7 +104,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
               });
               return;
             }
-            if (_passwordController.text != widget.todo.password) {
+            if (_passwordController.text != widget.todo!.password) {
               setState(() {
                 errorMessage = "Please provide valid Password";
               });
@@ -113,7 +112,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
             }
 
             Navigator.of(context).pop();
-            widget.view.onPasswordValidated(widget.todo.id);
+            widget.view!.onPasswordValidated(widget.todo!.id);
           },
         )
       ],

@@ -8,9 +8,9 @@ import 'package:todo/ui/todo/PasswordDialog.dart';
 import 'package:todo/utils/AppSingleton.dart';
 
 class AddTodo extends StatefulWidget {
-  AddTodo({Key key, this.todoId}) : super(key: key);
+  AddTodo({Key? key, this.todoId}) : super(key: key);
 
-  final int todoId;
+  final int? todoId;
 
   @override
   _AddTodoState createState() => _AddTodoState();
@@ -44,17 +44,17 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
 
   var _descriptionFocusNode = FocusNode();
 
-  Todo _todo;
-  AddTodoModel _model;
+  Todo? _todo;
+  late AddTodoModel _model;
 
   void initState() {
     super.initState();
     _todo = null;
     _model = AddTodoModel(this);
 
-    if (SchedulerBinding.instance.schedulerPhase ==
+    if (SchedulerBinding.instance!.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance.addPostFrameCallback((_) => onWidgetBuild());
+      SchedulerBinding.instance!.addPostFrameCallback((_) => onWidgetBuild());
     }
   }
 
@@ -84,7 +84,7 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
                   _descriptionController.text,
                   colorsList[selectedColorIndex].value,
                   widget.todoId,
-                  _todo == null ? "" : _todo.password);
+                  _todo == null ? "" : _todo!.password);
             },
             child: Container(
               margin: EdgeInsets.all(10),
@@ -151,7 +151,7 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
                       controller: _descriptionController,
                       maxLines: null,
                       textInputAction: TextInputAction.newline,
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.multiline,
                       textCapitalization: TextCapitalization.sentences,
                       focusNode: _descriptionFocusNode,
                       decoration: InputDecoration(
@@ -201,7 +201,7 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
         child: Text(
           "Edited " +
               DateFormat('dd-MMM-yyyy, hh:mm:aa').format(
-                DateTime.fromMillisecondsSinceEpoch(_todo.createdAt),
+                DateTime.fromMillisecondsSinceEpoch(_todo!.createdAt!),
               ),
           textAlign: TextAlign.end,
           style: TextStyle(
@@ -236,7 +236,7 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
     } else {
       return GestureDetector(
         onTap: () {
-          if (_todo.password != null && _todo.password.isNotEmpty) {
+          if (_todo!.password != null && _todo!.password!.isNotEmpty) {
             showDialog(
                 context: context,
                 builder: (context) {
@@ -253,7 +253,9 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
         child: Container(
           margin: EdgeInsets.all(10),
           child: Icon(
-            _todo != null && _todo.password != null && _todo.password.isNotEmpty
+            _todo != null &&
+                    _todo!.password != null &&
+                    _todo!.password!.isNotEmpty
                 ? Icons.lock_open
                 : Icons.lock_outline,
             color: selectedColor,
@@ -342,7 +344,7 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: new Text('CANCEL',
               style: TextStyle(
                 color: Colors.black,
@@ -353,7 +355,7 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        TextButton(
           child: new Text('UN-PROTECT',
               style: TextStyle(
                 color: Colors.black,
@@ -362,7 +364,7 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
               )),
           onPressed: () {
             Navigator.of(context).pop();
-            _model.removePassword(_todo.id);
+            _model.removePassword(_todo!.id);
           },
         )
       ],
@@ -385,14 +387,14 @@ class _AddTodoState extends State<AddTodo> implements AddTodoView {
   }
 
   @override
-  void onTodoAvailable(Todo todo) {
+  void onTodoAvailable(Todo? todo) {
     _todo = todo;
-    selectedColor = Color(_todo.color);
-    _titleController.text = _todo.title;
-    _descriptionController.text = _todo.description;
+    selectedColor = Color(_todo!.color!);
+    _titleController.text = _todo!.title!;
+    _descriptionController.text = _todo!.description!;
 
     for (var i = 0; i < colorsList.length; i++) {
-      if (colorsList[i].value == _todo.color) {
+      if (colorsList[i].value == _todo!.color) {
         selectedColorIndex = i;
         break;
       }

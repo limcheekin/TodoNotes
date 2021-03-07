@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:todo/database/data/Todo.dart';
@@ -50,11 +48,11 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
   }
 
   Widget _todoList() {
-    return FutureBuilder(
+    return FutureBuilder<List<Todo>>(
       future: _todoProvider.getAllTodo(),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
-          print("Error while fetchin months: " + snapshot.error);
+          print("Error while fetchin months: " + (snapshot.error as String));
           return Center(
             child: Text(
               "You don't have any notes yet, \nPlease add some.",
@@ -69,7 +67,7 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
                 child: CircularProgressIndicator(),
               );
             default:
-              return _loadTodo(snapshot.data);
+              return _loadTodo(snapshot.data!);
           }
         }
       },
@@ -98,7 +96,7 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
             Todo todo = data[index];
             return InkWell(
               onTap: () {
-                if (todo.password != null && todo.password.isNotEmpty) {
+                if (todo.password != null && todo.password!.isNotEmpty) {
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -120,7 +118,7 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
   }
 
   Widget _noteView(Todo todo) {
-    if (todo.password != null && todo.password.isNotEmpty) {
+    if (todo.password != null && todo.password!.isNotEmpty) {
       return Container(
         width: double.maxFinite,
         margin: EdgeInsets.all(5),
@@ -132,7 +130,7 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
               child: Container(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  todo.title,
+                  todo.title!,
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.black,
@@ -150,7 +148,7 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
           ],
         ),
         decoration: BoxDecoration(
-          border: Border.all(color: Color(todo.color), width: 2),
+          border: Border.all(color: Color(todo.color!), width: 2),
         ),
       );
     } else {
@@ -163,7 +161,7 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
               width: double.infinity,
               padding: EdgeInsets.all(10),
               child: Text(
-                todo.description,
+                todo.description!,
                 style: TextStyle(
                     color: Colors.grey,
                     fontFamily: 'Oswald_Regular',
@@ -173,21 +171,21 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
           ],
         ),
         decoration: BoxDecoration(
-          border: Border.all(color: Color(todo.color), width: 2),
+          border: Border.all(color: Color(todo.color!), width: 2),
         ),
       );
     }
   }
 
   Widget _showTitle(Todo _todo) {
-    if (_todo.title.isEmpty) {
+    if (_todo.title!.isEmpty) {
       return Container();
     } else {
       return Container(
         width: double.infinity,
         padding: EdgeInsets.only(left: 10, right: 10, top: 10),
         child: Text(
-          _todo.title,
+          _todo.title!,
           textAlign: TextAlign.start,
           style: TextStyle(
               color: Colors.black, fontFamily: 'Oswald_Bold', fontSize: 16),
@@ -196,7 +194,7 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
     }
   }
 
-  Future _navigateToAddTodo(int todoId) async {
+  Future _navigateToAddTodo(int? todoId) async {
     // start the SecondScreen and wait for it to finish with a result
     final result = await Navigator.push(
       context,
@@ -210,7 +208,7 @@ class _DashboardState extends State<Dashboard> implements DashboardView {
   }
 
   @override
-  void onPasswordValidated(int todoId) {
+  void onPasswordValidated(int? todoId) {
     _navigateToAddTodo(todoId);
   }
 }
